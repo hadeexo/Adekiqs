@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Outfit:wght@100..900&family=Prata&display=swap');
+@import "tailwindcss";
+
+
+@keyframes rotateY {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+  }
+
+  .rotate-3d {
+    animation: rotateY 5s linear infinite;
+    transform-style: preserve-3d;
+  }
+.spin-slow {
+  animation: spin-slow 5s linear infinite;
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.8s ease-out forwards;
+}
+
+
+a.active hr{
+    display: block;
+    transition: 0.5s linear;
+}
+
+*{
+    font-family: Outfit;
+}
+
+.dark{
+background-color: #121212;
+color: white;
+}
+
+.prata-regular{
+    font-family: "League Spartan", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
+@media (max-width:640px){
+    a.active{
+        background-color: black;
+        color: white;
+    }
+}
