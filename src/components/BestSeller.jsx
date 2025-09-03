@@ -35,7 +35,7 @@ const BestSeller = () => {
             bestSeller.map((item) => (
               <div
                 key={item._id}
-                className="group relative bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 p-4 w-64"
+                className="group relative bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 p-4 w-45 md:w-64"
               >
                 <ProductItem
                   id={item._id}

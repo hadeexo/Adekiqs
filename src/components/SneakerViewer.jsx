@@ -41,7 +41,7 @@ const SneakerViewer = () => {
           <SneakerModel />
         </Suspense>
 
-        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} />
+        <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} enableRotate={false} />
       </Canvas>
     </div>
   );

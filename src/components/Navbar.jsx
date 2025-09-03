@@ -8,38 +8,54 @@ const Navbar = () => {
   const { setShowSearch, getCartCount } = useContext(ShopContext);
 
   return (
-    <div className="flex items-center justify-between py-5 font-medium shadow-lg animate-fade-in">
-      <Link to="/" className="flex justify-center items-center">
-        <img src={assets.logo} alt="Logo" className="w-15" />
-        <h2 className="text-2xl">Adekiqs</h2>
+    <nav className="flex items-center justify-between py-5 font-medium shadow-lg animate-fade-in relative">
+      {/* Logo */}
+      <Link to="/" className="flex justify-center items-center gap-2">
+        <img src={assets.logo} alt="Logo" className="w-16" />
+        <h2 className="text-2xl font-semibold">Adekiqs</h2>
       </Link>
-      <ul className="hidden sm:flex gap-5 text-sm text-gray-700 ">
-        <NavLink to="/" className="flex flex-col items-center gap-1">
-          <p>HOME</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-        <NavLink to="/collection" className="flex flex-col items-center gap-1">
-          <p>COLLECTION</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-        <NavLink to="/about" className="flex flex-col items-center gap-1">
-          <p>ABOUT</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-        <NavLink to="/contact" className="flex flex-col items-center gap-1">
-          <p>CONTACT</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
+
+      {/* Desktop Nav */}
+      <ul className="hidden sm:flex gap-6 text-sm text-gray-700">
+        {[
+          { name: "HOME", to: "/" },
+          { name: "COLLECTION", to: "/collection" },
+          { name: "ABOUT", to: "/about" },
+          { name: "CONTACT", to: "/contact" },
+        ].map((link) => (
+          <NavLink
+            key={link.to}
+            to={link.to}
+            className={({ isActive }) =>
+              `flex flex-col items-center gap-1 transition-colors ${
+                isActive ? "text-black font-semibold" : "hover:text-black"
+              }`
+            }
+          >
+            <p>{link.name}</p>
+            <hr
+              className={({ isActive }) =>
+                `w-2/4 h-[1.5px] bg-gray-700 ${
+                  isActive ? "block" : "hidden"
+                }`
+              }
+            />
+          </NavLink>
+        ))}
       </ul>
 
+      {/* Right Side Icons */}
       <div className="flex items-center gap-6">
-        <img
+        {/* Search */}
+        <button
           onClick={() => setShowSearch(true)}
-          src={assets.search_icon}
-          className="w-5 cursor-pointer"
-          alt="Search"
           aria-label="Search"
-        />
+          className="cursor-pointer"
+        >
+          <img src={assets.search_icon} className="w-5" alt="Search" />
+        </button>
+
+        {/* Profile Dropdown */}
         <div className="group relative">
           <Link to="/login">
             <img
@@ -49,14 +65,28 @@ const Navbar = () => {
               aria-label="User Profile"
             />
           </Link>
-          <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-            <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
-              <p className="cursor-pointer hover:text-black">My Profile</p>
-              <p className="cursor-pointer hover:text-black">Orders</p>
-              <p className="cursor-pointer hover:text-black">Logout</p>
+          <div className="absolute right-0 pt-4 hidden group-hover:block transition ease-in-out duration-200 transform">
+            <div className="flex flex-col gap-2 w-40 py-3 px-5 bg-slate-100 text-gray-600 rounded-xl shadow-lg">
+              <Link
+                to="/profile"
+                className="cursor-pointer hover:text-black transition"
+              >
+                My Profile
+              </Link>
+              <Link
+                to="/orders"
+                className="cursor-pointer hover:text-black transition"
+              >
+                Orders
+              </Link>
+              <button className="text-left cursor-pointer hover:text-black transition">
+                Logout
+              </button>
             </div>
           </div>
         </div>
+
+        {/* Cart */}
         <Link to="/cart" className="relative">
           <img
             src={assets.cart_icon}
@@ -64,63 +94,63 @@ const Navbar = () => {
             alt="Cart"
             aria-label="Shopping Cart"
           />
-          <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px]">
+          <span className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[10px]">
             {getCartCount()}
-          </p>
+          </span>
         </Link>
-        <img
+
+        {/* Mobile Menu Toggle */}
+        <button
           onClick={() => setVisible(!visible)}
-          src={visible ? assets.close_icon : assets.menu_icon}
-          className="w-5 cursor-pointer sm:hidden"
-          alt="Menu Toggle"
+          aria-label="Menu Toggle"
+          aria-controls="mobile-menu"
           aria-expanded={visible ? "true" : "false"}
-        />
+          className="sm:hidden"
+        >
+          <img
+            src={visible ? assets.close_icon : assets.menu_icon}
+            className="w-6"
+            alt="Menu Toggle"
+          />
+        </button>
       </div>
 
+      {/* Mobile Menu */}
       <div
-        className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${
-          visible ? "w-full" : "w-0"
-        } transition delay-150 duration-300`}
+        id="mobile-menu"
+        className={`fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 z-50 ${
+          visible ? "translate-x-0 w-3/4" : "translate-x-full w-0"
+        }`}
       >
-        <div className="flex flex-col text-gray-600 text-center gap-10">
-          <div
+        <div className="flex flex-col text-gray-700 text-left gap-6 py-6">
+          {/* Back Button */}
+          <button
             onClick={() => setVisible(false)}
-            className="flex items-center gap-4 p-3 cursor-pointer "
+            className="flex items-center gap-4 p-3 cursor-pointer hover:bg-gray-100 transition"
           >
-            <img src={assets.dropdown_icon} alt="Back" />
+            <img src={assets.dropdown_icon} alt="Back" className="w-4" />
             <p>Back</p>
-          </div>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border-b-1"
-            to="/"
-          >
-            HOME
-          </NavLink>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border-b-1"
-            to="/collection"
-          >
-            COLLECTION
-          </NavLink>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border-b-1"
-            to="/about"
-          >
-            ABOUT
-          </NavLink>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border-b-1"
-            to="/contact"
-          >
-            CONTACT
-          </NavLink>
+          </button>
+
+          {/* Nav Links */}
+          {[
+            { name: "HOME", to: "/" },
+            { name: "COLLECTION", to: "/collection" },
+            { name: "ABOUT", to: "/about" },
+            { name: "CONTACT", to: "/contact" },
+          ].map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              onClick={() => setVisible(false)}
+              className="py-2 pl-6 border-b hover:bg-gray-50 transition"
+            >
+              {link.name}
+            </NavLink>
+          ))}
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
